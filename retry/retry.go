@@ -40,6 +40,12 @@ func Do(ctx context.Context, fn retryableFunc, ops ...option) error {
 		case <-ctx.Done():
 			return ctx.Err()
 		case <-t.C:
+			// In case ctx.Done and t.C happen completely at the same time
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			default:
+			}
 		}
 	}
 }
