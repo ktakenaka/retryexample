@@ -28,6 +28,7 @@ func defaultBackoff() *backoff {
 	}
 }
 
+// next calculates waiting duration before retrying.
 func (b *backoff) Next() time.Duration {
 	if b.retryTimes >= b.maxRetryTimes {
 		return stop
@@ -38,6 +39,7 @@ func (b *backoff) Next() time.Duration {
 	return b.randomize(i)
 }
 
+// randomize jitter implementation
 func (b *backoff) randomize(i time.Duration) time.Duration {
 	r := rand.New(rand.NewSource(time.Now().Unix()))
 	min := float64(i) - float64(b.maxJitterInterval)
@@ -45,6 +47,9 @@ func (b *backoff) randomize(i time.Duration) time.Duration {
 	return time.Duration(min + ((max - min) * r.Float64()))
 }
 
+/*
+Options to customize backoff configuration
+*/
 func MaxRetryTimes(mt uint) option {
 	return func(eb *backoff) {
 		eb.maxRetryTimes = mt
