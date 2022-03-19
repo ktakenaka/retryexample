@@ -29,7 +29,7 @@ func defaultBackoff() *backoff {
 }
 
 // next calculates waiting duration before retrying.
-func (b *backoff) Next() time.Duration {
+func (b *backoff) next() time.Duration {
 	if b.retryTimes >= b.maxRetryTimes {
 		return stop
 	}

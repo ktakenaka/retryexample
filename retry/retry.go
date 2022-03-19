@@ -30,7 +30,7 @@ func Do(ctx context.Context, fn retryableFunc, ops ...option) error {
 			return err
 		}
 
-		if next = b.Next(); next == stop {
+		if next = b.next(); next == stop {
 			return err
 		}
 
